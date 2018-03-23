@@ -12,6 +12,8 @@ const validateAlphaNumString = require('./validators').validateAlphaNumString;
 const invalidUsernameError = require('./ErrorHandling/errorMessages').invalidUsername;
 const missingTokenError = require('./ErrorHandling/errorMessages').missingToken;
 
+const getScope = require('./authorizationHandling.js').getScope;
+
 const TOKEN_VALID_MINUTES = 60;
 const apiRoutes = express.Router();
 
@@ -47,15 +49,6 @@ apiRoutes.post('/login', function (req, res) {
 
     res.status(200).send({user: validated.username, token: token, exp: expDate});
 });
-
-function getScope(username) {
-    var scope = [];
-    if (username == "ADMIN" ) {
-        scope.push(scopes.ReadFlag);
-    }
-    scope.push(scopes.ReadAwesomeHackers);
-    return scope;
-}
 
 apiRoutes.get('/validateToken/:username', (req, res) => {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
