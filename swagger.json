@@ -1,0 +1,298 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Sopra Steria CTF API",
+    "description": "Sopra Steria CTF's API for ethical hacking.",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "api.koderommet.no",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "consultants",
+      "description": "Endpoints for managing users."
+    },
+    {
+      "name": "locations",
+      "description": "Endpoints for managing Sopra Steria's office locations, such as Oslo, Stavanger, and Trondheim"
+    },
+    {
+      "name": "flag",
+      "description": "Endpoints for reading flag."
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "X-Access-Token",
+      "in": "header",
+      "description": "This API requires JSON Web Tokens. You acquire your token at login with your user. Unfortunately, this UI does not support API calls. You have to use a tool such Postman to test the calls."
+    }
+  },
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "consultants"
+        ],
+        "description": "Logs into Worktime",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Object of user information for login",
+            "schema": {
+              "$ref": "#/definitions/requests/LoginRequest"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "$ref": "#/definitions/responses/LoginResponse"
+            }
+          },
+          "401": {
+            "description": "Wrong username or password",
+            "schema": {
+              "$ref": "#/definitions/responses/ErrorMessage"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses/ErrorMessage"
+            }
+          }
+        },
+        "default": {
+          "description": "Unexpected error",
+          "schema": {
+            "$ref": "#/definitions/responses/ErrorModel"
+          }
+        }
+      }
+    },
+    "/validateToken/{username}": {
+      "get": {
+        "tags": [
+          "consultants"
+        ],
+        "description": "Validates a token for a certain username.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "ID of user that gets its token validated",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Validate token successful",
+            "schema": {
+              "type": "string",
+              "example": "OK"
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "$ref": "#/definitions/responses/ErrorMessage"
+            }
+          }
+        },
+        "default": {
+          "description": "Unexpected error",
+          "schema": {
+            "$ref": "#/definitions/responses/ErrorModel"
+          }
+        }
+      }
+    },
+    "/locationList": {
+      "get": {
+        "tags": [
+          "locations"
+        ],
+        "description": "Fetches all locations. Requires scope: read:locations.",
+        "responses": {
+          "200": {
+            "description": "Fetch location list successful",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/responses/LocationListResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "'No locations found' or 'Unknown error'",
+            "schema": {
+              "$ref": "#/definitions/responses/ErrorMessage"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses/ErrorMessage"
+            }
+          }
+        },
+        "default": {
+          "description": "unexpected error",
+          "schema": {
+            "$ref": "#/definitions/responses/ErrorModel"
+          }
+        }
+      }
+    },
+    "/flag": {
+      "get": {
+        "tags": [
+          "flag"
+        ],
+        "description": "Fetches the flag. Requires scope: read:flag.",
+        "responses": {
+          "200": {
+            "description": "Fetch flag successful",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "'Unknown error'",
+            "schema": {
+              "$ref": "#/definitions/responses/ErrorMessage"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/responses/ErrorMessage"
+            }
+          }
+        },
+        "default": {
+          "description": "unexpected error",
+          "schema": {
+            "$ref": "#/definitions/responses/ErrorModel"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "requests": {
+      "LoginRequest": {
+        "required": [
+          "username",
+          "password"
+        ],
+        "properties": {
+          "user": {
+            "type": "string",
+            "example": "maritio_o",
+            "uniqueItems": true
+          },
+          "pwd": {
+            "type": "string",
+            "example": "Password1234567"
+          }
+        }
+      }
+    },
+    "responses": {
+      "LoginResponse": {
+        "type": "object",
+        "required": [
+          "user",
+          "token"
+        ],
+        "properties": {
+          "user": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "expDate": {
+            "type": "string"
+          }
+        }
+      },
+      "LocationListResponse": {
+        "type": "object",
+        "required": [
+          "name",
+          "city",
+          "description"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorModel": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseMessage": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorMessage": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
