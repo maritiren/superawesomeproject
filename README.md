@@ -1,2 +1,2 @@
 # superawesomeproject
-My Super Awesome Web Project
+Super Awesome Web Project
