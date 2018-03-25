@@ -2,27 +2,27 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
-    "title": "Sopra Steria CTF API",
-    "description": "Sopra Steria CTF's API for ethical hacking.",
+    "title": "Superawesome TGHack project",
+    "description": "Superawesome project for hackers",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "api.koderommet.no",
+  "host": "api.awesome.tghack.no",
   "basePath": "/api",
   "tags": [
     {
-      "name": "consultants",
-      "description": "Endpoints for managing users."
+      "name": "hackers",
+      "description": "Endpoints for managing hackers."
     },
     {
-      "name": "locations",
-      "description": "Endpoints for managing Sopra Steria's office locations, such as Oslo, Stavanger, and Trondheim"
+      "name": "categories",
+      "description": "Endpoints for managing CTF categories."
     },
     {
       "name": "flag",
-      "description": "Endpoints for reading flag."
+      "description": "Endpoints for managing flag."
     }
   ],
   "schemes": [
@@ -46,9 +46,9 @@
     "/login": {
       "post": {
         "tags": [
-          "consultants"
+          "hackers"
         ],
-        "description": "Logs into Worktime",
+        "description": "Logs into HackBook",
         "parameters": [
           {
             "name": "body",
@@ -91,7 +91,7 @@
     "/validateToken/{username}": {
       "get": {
         "tags": [
-          "consultants"
+          "hackers"
         ],
         "description": "Validates a token for a certain username.",
         "parameters": [
@@ -126,24 +126,24 @@
         }
       }
     },
-    "/locationList": {
+    "/CategoryList": {
       "get": {
         "tags": [
-          "locations"
+          "categories"
         ],
-        "description": "Fetches all locations. Requires scope: read:locations.",
+        "description": "Fetches all categories. Requires scope: read:categories.",
         "responses": {
           "200": {
-            "description": "Fetch location list successful",
+            "description": "Fetch category list successful",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/responses/LocationListResponse"
+                "$ref": "#/definitions/responses/CategoryListResponse"
               }
             }
           },
           "400": {
-            "description": "'No locations found' or 'Unknown error'",
+            "description": "'No categories found' or 'Unknown error'",
             "schema": {
               "$ref": "#/definitions/responses/ErrorMessage"
             }
@@ -237,7 +237,7 @@
           }
         }
       },
-      "LocationListResponse": {
+      "CategoryListResponse": {
         "type": "object",
         "required": [
           "name",
