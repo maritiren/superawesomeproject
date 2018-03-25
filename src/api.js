@@ -142,4 +142,10 @@ apiRoutes.get('/flag', guard.check([scopes.ReadFlag]), function (req, res) {
     res.status(200).send({flag: flag});
 });
 
+apiRoutes.use(function (err, req, res, next) {
+    if (err.code === 'permission_denied') {
+      res.status(403).send('Forbidden');
+    }
+});
+
 module.exports = apiRoutes;
