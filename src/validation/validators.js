@@ -5,7 +5,7 @@ const validator = require('validator');
 */
 
 module.exports.validateAlphaNumString = function (input) {
-    if (validator.isAlphanumeric(input + '') || input == '') {
+    if (validator.isAlphanumeric(input + '')) {
         return input;
     } else {
         winston.log('Illegal alphanumeric input string: ' + input);

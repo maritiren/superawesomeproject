@@ -13,11 +13,11 @@
   "basePath": "/api",
   "tags": [
     {
-      "name": "hackers",
+      "name": "hacker",
       "description": "Endpoints for managing hackers."
     },
     {
-      "name": "categories",
+      "name": "awesomeHackers",
       "description": "Endpoints for managing CTF categories."
     },
     {
@@ -46,7 +46,7 @@
     "/login": {
       "post": {
         "tags": [
-          "hackers"
+          "hacker"
         ],
         "description": "Logs into HackBook",
         "parameters": [
@@ -89,9 +89,9 @@
       }
     },
     "/validateToken/{username}": {
-      "get": {
+      "post": {
         "tags": [
-          "hackers"
+          "hacker"
         ],
         "description": "Validates a token for a certain username.",
         "parameters": [
@@ -126,24 +126,24 @@
         }
       }
     },
-    "/CategoryList": {
+    "/AwesomeHackerList": {
       "get": {
         "tags": [
-          "categories"
+          "awesomeHackers"
         ],
-        "description": "Fetches all categories. Requires scope: read:categories.",
+        "description": "Fetches awesome hackers. Requires scope: read:awesomehackers.",
         "responses": {
           "200": {
-            "description": "Fetch category list successful",
+            "description": "Fetch awesome hacker list successful",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/responses/CategoryListResponse"
+                "$ref": "#/definitions/responses/AwesomeHackerListResponse"
               }
             }
           },
           "400": {
-            "description": "'No categories found' or 'Unknown error'",
+            "description": "'No awesome hackers found' or 'Unknown error'",
             "schema": {
               "$ref": "#/definitions/responses/ErrorMessage"
             }
@@ -237,21 +237,13 @@
           }
         }
       },
-      "CategoryListResponse": {
+      "AwesomeHackerListResponse": {
         "type": "object",
         "required": [
-          "name",
-          "city",
-          "description"
+          "name"
         ],
         "properties": {
           "name": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "description": {
             "type": "string"
           }
         }

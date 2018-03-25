@@ -1,18 +1,18 @@
 const express = require('express');
 const http = require('http');
 const jwt = require('jsonwebtoken');
-const jwtSecret = require('./constants').jwtSecret;
-const issuer = require('./constants').issuerDomain;
-const scopes = require('./constants').scopes;
+const jwtSecret = require('./config/secrets').jwtSecret;
+const issuer = require('./config/constants').issuerDomain;
+const scopes = require('./config/constants').scopes;
 const guard = require('express-jwt-permissions')({
     permissionsProperty: 'scope'
 });
 
-const validateAlphaNumString = require('./validators').validateAlphaNumString;
+const validateAlphaNumString = require('./validation/validators').validateAlphaNumString;
 const invalidUsernameError = require('./ErrorHandling/errorMessages').invalidUsername;
 const missingTokenError = require('./ErrorHandling/errorMessages').missingToken;
 
-const getScope = require('./authorizationHandling.js').getScope;
+const getScope = require('./authorization/authorizationHandling.js').getScope;
 
 const TOKEN_VALID_MINUTES = 60;
 const apiRoutes = express.Router();
@@ -24,16 +24,19 @@ apiRoutes.get('/health', function (req, res) {
 // Login user
 apiRoutes.post('/login', function (req, res) {
     let validated = {};
+
+    if  (!req.body.username) {
+        res.status(400).send({error: "Bad request"})
+    }
+
     try {
-        validated.username = validateDescription(req.body.username).toUpperCase();
+        validated.username = validateAlphaNumString(req.body.username).toUpperCase();
     } catch (e) {
-        res.status(422).send({error: 'Your username may only have alphanumerical values.. Are you trying to hack me?'});
+        res.status(422).send({error: invalidUsernameError});
         return;
     }
 
-    if (validated.username == "ADMIN" && password != "AC3048783DA0B281B6F88FD3F177807F17A9B8AAEDDA5E6185AB6A759BEB105C") {
-        res.status(401).send("Wrong username or password.");
-    }
+    // As this repo is made for a task, this project does not really have any login functionality.
 
     const exp = Math.floor(Date.now() / 1000) + (TOKEN_VALID_MINUTES * 60);
     const expDate = new Date();
@@ -50,11 +53,11 @@ apiRoutes.post('/login', function (req, res) {
     res.status(200).send({user: validated.username, token: token, exp: expDate});
 });
 
-apiRoutes.get('/validateToken/:username', (req, res) => {
+apiRoutes.post('/validateToken/:username', (req, res) => {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (!token) {
-        res.status(404).send({error: });
+        res.status(404).send({error: missingTokenError});
     }
 
     let validated = {};
@@ -72,7 +75,11 @@ apiRoutes.get('/validateToken/:username', (req, res) => {
             return;
         } else {
             req.user = decoded;
-            res.status(200).send("Token verified!");
+            
+            if (validated.urlUser == decoded.sub) {
+                res.status(200).send("Token verified!");
+            }
+            res.status(401).send("Token not verified. Are you trying to falsify a token? :O");
         }
     });
 });
@@ -82,7 +89,7 @@ apiRoutes.use((req, res, next) => {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (!token) {
-        res.status(401).send({error: });
+        res.status(401).send({error: missingTokenError});
     }
 
     /* *
@@ -134,10 +141,6 @@ apiRoutes.get('/awesomeHackerList', guard.check([scopes.ReadAwesomeHackers]), fu
 });
 
 apiRoutes.get('/flag', guard.check([scopes.ReadFlag]), function (req, res) {
-    // Do critical functionality here
-
-    const flag = "placeholder for flag"
-
     res.status(200).send({flag: flag});
 });
 
