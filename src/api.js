@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const jwt = require('jsonwebtoken');
 const jwtSecret = require('./config/secrets').jwtSecret;
+const flag = require('./config/secrets').flag;
 const issuer = require('./config/constants').issuerDomain;
 const scopes = require('./config/constants').scopes;
 const guard = require('express-jwt-permissions')({
