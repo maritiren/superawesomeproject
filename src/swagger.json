@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "api.awesome.tghack.no",
+  "host": "api.superawesome.tghack.no",
   "basePath": "/api",
   "tags": [
     {
