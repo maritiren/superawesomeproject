@@ -7,7 +7,6 @@ const scopes = require('./config/constants').scopes;
 const guard = require('express-jwt-permissions')({
     permissionsProperty: 'scope'
 });
-
 const validateAlphaNumString = require('./validation/validators').validateAlphaNumString;
 const invalidUsernameError = require('./ErrorHandling/errorMessages').invalidUsername;
 const missingTokenError = require('./ErrorHandling/errorMessages').missingToken;
