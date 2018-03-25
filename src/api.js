@@ -11,9 +11,7 @@ const guard = require('express-jwt-permissions')({
 const validateAlphaNumString = require('./validation/validators').validateAlphaNumString;
 const invalidUsernameError = require('./ErrorHandling/errorMessages').invalidUsername;
 const missingTokenError = require('./ErrorHandling/errorMessages').missingToken;
-
 const getScope = require('./authorization/authorizationHandling.js').getScope;
-
 const TOKEN_VALID_MINUTES = 60;
 const apiRoutes = express.Router();
 
