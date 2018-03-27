@@ -9,8 +9,8 @@ const guard = require('express-jwt-permissions')({
     permissionsProperty: 'scope'
 });
 const validateAlphaNumString = require('./validation/validators').validateAlphaNumString;
-const invalidUsernameError = require('./ErrorHandling/errorMessages').invalidUsername;
-const missingTokenError = require('./ErrorHandling/errorMessages').missingToken;
+const invalidUsernameError = require('./errorHandling/errorMessages').invalidUsername;
+const missingTokenError = require('./errorHandling/errorMessages').missingToken;
 const getScope = require('./authorization/authorizationHandling.js').getScope;
 const TOKEN_VALID_MINUTES = 60;
 const apiRoutes = express.Router();

@@ -39,7 +39,7 @@
       "type": "apiKey",
       "name": "X-Access-Token",
       "in": "header",
-      "description": "This API requires JSON Web Tokens. You acquire your token at login with your user. Unfortunately, this UI does not support API calls. You have to use a tool such Postman to test the calls."
+      "description": "This API requires JSON Web Tokens. You acquire your token at login with your user. Unfortunately, this UI does not support API calls. You have to use a tool such as Postman to test the calls."
     }
   },
   "paths": {
