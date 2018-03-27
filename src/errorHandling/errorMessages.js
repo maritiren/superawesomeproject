@@ -1,2 +1,2 @@
 module.exports.invalidUsername = "Invalid Username: Usernames may only contain alphanumerical values. Checkout git repository for instructions.";
-module.exports.missingToken = "Missing Token: Fix handling of missing tokens. Checkout the issue at https://github.com/maritiren/superawesomeproject/issues/1";
+module.exports.missingToken = "Missing Token: Fix handling of missing tokens. Checkout my issue at git - maritiren.";
